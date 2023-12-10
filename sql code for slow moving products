@@ -1,0 +1,17 @@
+select p.tag as PurTag,
+       p.MainType as maintype,
+       p.product as Product,
+       p.prod_id as PurProdId,
+       s.tag as SalTag,
+       s.prod_id as SalProdID,
+       year(p.date) as PurYear,
+       datediff(month, p.date, getdate()) as MonthsOnStore
+from db.tblpurchases as p
+    full join db.tblsale as s
+        on p.tag = s.tag
+where (
+          s.tag is null
+          or s.Prod_ID is null
+      )
+      and year(p.date) <= '2022'
+order by MonthsOnStore desc
